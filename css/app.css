@@ -19,11 +19,24 @@ html, body {
 
     background: #acd581;
     box-shadow: inset 0 0 30px rgba(0,0,0,0.8);
-
 }
 
 .main-title {
     font-size: 60px;
     color: rgba(255,255,255,0.1);
     text-align: center;
+}
+
+.pointer {
+    position: absolute;
+    top: -15px;
+    left: -15px;
+    width: 30px;
+    height: 30px;
+    background: #8a2e3a;
+    opacity: 0;
+}
+
+.touching .pointer {
+    opacity: 1;
 }

@@ -8,6 +8,8 @@ $(function() {
          */
         var touchSurface = $(".js-touch-surface");
 
+        var pointer = $(".js-pointer");
+
         /**
          * Constructor of the app
          */
@@ -31,7 +33,10 @@ $(function() {
          */
         var touchStarted = function(event) {
 
-            console.log("touch starts");
+            touchSurface.addClass("touching");
+            var x = getXPosition(event);
+            var y = getYPosition(event);
+            movePointerTo(x, y);
         };
 
         /**
@@ -40,7 +45,39 @@ $(function() {
          */
         var touchEnded = function(event) {
 
-            console.log("touch ends");
+            touchSurface.removeClass("touching");
+        };
+
+        /**
+         * Moves the pointer to a position
+         * @param  {Number} x X coordinate of the position
+         * @param  {Number} y Y coordinate of the position
+         */
+        var movePointerTo = function(x,y) {
+
+            pointer.css({
+                "transform": "translate(" + x + "px, " + y + "px)"
+            });
+        };
+
+        /**
+         * Gets the X position of an event
+         * @param  {Event} event
+         * @return {Number} the X position of the event
+         */
+        var getXPosition = function(event) {
+
+            return event.gesture.srcEvent.clientX;
+        };
+
+        /**
+         * Gets the Y position of an event
+         * @param  {Event} event
+         * @return {Number} the Y position of the event
+         */
+        var getYPosition = function(event) {
+
+            return event.gesture.srcEvent.clientY;
         };
 
         return {
