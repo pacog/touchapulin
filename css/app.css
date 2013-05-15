@@ -23,8 +23,10 @@ html, body {
 
 .main-title {
     font-size: 60px;
-    color: rgba(255,255,255,0.1);
+    color: #FFF;
     text-align: center;
+    text-shadow: 0 0 10px #8a2e3a;
+    opacity: 0.1;
 }
 
 .pointer {
