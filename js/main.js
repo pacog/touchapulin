@@ -25,6 +25,7 @@ $(function() {
 
             touchSurface.hammer().on("touch", touchStarted);
             touchSurface.hammer().on("release", touchEnded);
+            touchSurface.hammer().on("drag", dragging);
         };
 
         /**
@@ -46,6 +47,17 @@ $(function() {
         var touchEnded = function(event) {
 
             touchSurface.removeClass("touching");
+        };
+
+        /**
+         * Called when dragging through the page
+         * @param  {Event} event
+         */
+        var dragging = function(event) {
+
+            var x = getXPosition(event);
+            var y = getYPosition(event);
+            movePointerTo(x, y);
         };
 
         /**
