@@ -57,6 +57,7 @@ $(function() {
             var y = position.y;
             movePointerTo(x, y);
             updateTouchInfo(x, y);
+            event.gesture.srcEvent.preventDefault();
         };
 
         /**
@@ -66,6 +67,7 @@ $(function() {
         var touchEnded = function(event) {
 
             touchSurface.removeClass("touching");
+            event.gesture.srcEvent.preventDefault();
         };
 
         /**
@@ -79,6 +81,7 @@ $(function() {
             var y = position.y;
             movePointerTo(x, y);
             updateTouchInfo(x, y);
+            event.gesture.srcEvent.preventDefault();
         };
 
         /**
