@@ -8,7 +8,23 @@ $(function() {
          */
         var touchSurface = $(".js-touch-surface");
 
+        /**
+         * Dom element that shows the touch position
+         * @type {Element}
+         */
         var pointer = $(".js-pointer");
+
+        /**
+         * Dom element that shows the X coordinate of the touch
+         * @type {Element}
+         */
+        var xCoord = $(".js-x-coord");
+
+        /**
+         * Dom element that shows the Y coordinate of the touch
+         * @type {Element}
+         */
+        var yCoord = $(".js-y-coord");
 
         /**
          * Constructor of the app
@@ -38,6 +54,7 @@ $(function() {
             var x = getXPosition(event);
             var y = getYPosition(event);
             movePointerTo(x, y);
+            updateTouchInfo(x, y);
         };
 
         /**
@@ -58,6 +75,7 @@ $(function() {
             var x = getXPosition(event);
             var y = getYPosition(event);
             movePointerTo(x, y);
+            updateTouchInfo(x, y);
         };
 
         /**
@@ -74,6 +92,17 @@ $(function() {
                 "-webkit-transform": "translate(" + x + "px, " + y + "px)",
                 "-moz-transform": "translate(" + x + "px, " + y + "px)"
             });
+        };
+
+        /**
+         * Updates the coordinates info
+         * @param  {Number} x X coordinate of the position
+         * @param  {Number} y Y coordinate of the position
+         */
+        var updateTouchInfo = function(x, y) {
+
+            xCoord.html(x + "px");
+            yCoord.html(y + "px");
         };
 
         /**
