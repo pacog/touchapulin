@@ -51,8 +51,10 @@ $(function() {
         var touchStarted = function(event) {
 
             touchSurface.addClass("touching");
-            var x = getXPosition(event);
-            var y = getYPosition(event);
+
+            var position = getPosition(event);
+            var x = position.x;
+            var y = position.y;
             movePointerTo(x, y);
             updateTouchInfo(x, y);
         };
@@ -72,8 +74,9 @@ $(function() {
          */
         var dragging = function(event) {
 
-            var x = getXPosition(event);
-            var y = getYPosition(event);
+            var position = getPosition(event);
+            var x = position.x;
+            var y = position.y;
             movePointerTo(x, y);
             updateTouchInfo(x, y);
         };
@@ -106,23 +109,26 @@ $(function() {
         };
 
         /**
-         * Gets the X position of an event
+         * Gets the position of an event
          * @param  {Event} event
-         * @return {Number} the X position of the event
+         * @return {Object} {x,y} object with the position
          */
-        var getXPosition = function(event) {
+        var getPosition = function(event) {
 
-            return event.gesture.srcEvent.clientX;
-        };
+            if(Modernizr.touch) {
 
-        /**
-         * Gets the Y position of an event
-         * @param  {Event} event
-         * @return {Number} the Y position of the event
-         */
-        var getYPosition = function(event) {
+                //TODO: support for more touches
+                return {
+                    "x": event.gesture.srcEvent.touches[0].clientX,
+                    "y": event.gesture.srcEvent.touches[0].clientY
+                };
+            } else {
 
-            return event.gesture.srcEvent.clientY;
+                return {
+                    "x": event.gesture.srcEvent.clientX,
+                    "y": event.gesture.srcEvent.clientY
+                };
+            }
         };
 
         return {
