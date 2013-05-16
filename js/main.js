@@ -67,8 +67,12 @@ $(function() {
          */
         var movePointerTo = function(x,y) {
 
+            var newTransformValue = "translate(" + x + "px, " + y + "px)";
+
             pointer.css({
-                "transform": "translate(" + x + "px, " + y + "px)"
+                "transform": newTransformValue,
+                "-webkit-transform": "translate(" + x + "px, " + y + "px)",
+                "-moz-transform": "translate(" + x + "px, " + y + "px)"
             });
         };
 
