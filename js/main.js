@@ -27,11 +27,20 @@ $(function() {
         var yCoord = $(".js-y-coord");
 
         /**
+         * We will store the synth here, audiolet for now
+         * @type {Object}
+         */
+        var synth = false;
+
+        var sineGenerator = false;
+
+        /**
          * Constructor of the app
          */
         var init = function() {
 
             initEvents();
+            initSound();
         };
 
         /**
@@ -42,6 +51,15 @@ $(function() {
             touchSurface.hammer().on("touch", touchStarted);
             touchSurface.hammer().on("release", touchEnded);
             touchSurface.hammer().on("drag", dragging);
+        };
+
+        /**
+         * Initializes the sound player
+         */
+        var initSound = function() {
+
+            synth = new Audiolet();
+            sineGenerator = new Sine(synth);
         };
 
         /**
@@ -58,6 +76,7 @@ $(function() {
             movePointerTo(x, y);
             updateTouchInfo(x, y);
             event.gesture.srcEvent.preventDefault();
+            startPlaying();
         };
 
         /**
@@ -68,6 +87,7 @@ $(function() {
 
             touchSurface.removeClass("touching");
             event.gesture.srcEvent.preventDefault();
+            stopPlaying();
         };
 
         /**
@@ -133,6 +153,23 @@ $(function() {
                 };
             }
         };
+
+        /**
+         * Starts playing the synth
+         */
+        var startPlaying = function() {
+
+            sineGenerator.connect(synth.output);
+        };
+
+        /**
+         * Stios playing the synth
+         */
+        var stopPlaying = function() {
+
+            sineGenerator.disconnect(synth.output);
+        };
+
 
         return {
             init: init
