@@ -46,7 +46,7 @@ var SoundOutputHandler = function(options) {
 
         mediator.subscribe("inputStarted", inputStartHandler);
         mediator.subscribe("inputEnded", inputEndHandler);
-        mediator.subscribe("inputMove", inputMoveHandler);
+        mediator.subscribe("inputMoved", inputMoveHandler);
     };
 
     /**
@@ -56,7 +56,19 @@ var SoundOutputHandler = function(options) {
      */
     var inputStartHandler = function(x, y) {
 
-        startPlaying();
+        var frequency = getFrequency(x, y);
+        startPlaying(frequency);
+    };
+
+    /**
+     * Gets the frequency at which we should play, depneding on the coordinates
+     * @param  {Number} x X coordinate
+     * @param  {Number} y Y coordinate]
+     * @return {[type]}   The frequenty (Hz)
+     */
+    var getFrequency = function(x, y) {
+
+        return 440 + x;
     };
 
     /**
@@ -76,15 +88,29 @@ var SoundOutputHandler = function(options) {
      */
     var inputMoveHandler = function(x, y) {
 
-        //TODO
+        var frequency = getFrequency(x, y);
+        changePlayingFrequency(frequency);
     };
 
 
     /**
      * Starts playing the synth
+     * @param {Number} frequency new frequency in Hz
      */
-    var startPlaying = function() {
+    var startPlaying = function(frequency) {
 
+        sineGenerator = new Sine(synth, frequency);
+        sineGenerator.connect(synth.output);
+    };
+
+    /**
+     * Changes the frequency that the synth is playing
+     * @param {Number} frequency new frequency in Hz
+     */
+    var changePlayingFrequency = function(frequency) {
+
+        sineGenerator.disconnect(synth.output);
+        sineGenerator = new Sine(synth, frequency);
         sineGenerator.connect(synth.output);
     };
 
