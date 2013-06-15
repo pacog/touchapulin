@@ -23,6 +23,17 @@ var Touchapulin = function() {
      */
     var init = function() {
 
+        new InitialScreen({
+            screenElement: $(".js-initial-screen"),
+            callback: startApplication
+        });
+    };
+
+    /**
+     * Starts the application, called when everything is ready
+     */
+    var startApplication = function() {
+
         mediator = new Mediator();
 
         inputHandler = new InputHandler({
