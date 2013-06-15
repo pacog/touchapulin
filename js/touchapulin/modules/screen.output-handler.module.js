@@ -10,6 +10,18 @@ var ScreenOutputHandler = function(options) {
     var opt = false;
 
     /**
+     * Height of the viewport
+     * @type {Number}
+     */
+    var viewportHeight = false;
+
+    /**
+     * Width of the viewport
+     * @type {Number}
+     */
+    var viewportWidth = false;
+
+    /**
      * Constructor
      * @param  {Object} options:
      *         - mediator Mediator to communicate with the rest of the app
@@ -23,6 +35,8 @@ var ScreenOutputHandler = function(options) {
         mediator = options.mediator;
         opt = options;
         initEvents();
+        viewportHeight = opt.touchSurface.height();
+        viewportWidth = opt.touchSurface.width();
     };
 
 
@@ -76,6 +90,9 @@ var ScreenOutputHandler = function(options) {
      */
     var movePointerTo = function(x,y) {
 
+        x = viewportWidth*x;
+        y = viewportHeight*y;
+
         var newTransformValue = "translate(" + x + "px, " + y + "px)";
 
         opt.pointer.css({
@@ -92,8 +109,10 @@ var ScreenOutputHandler = function(options) {
      */
     var updateTouchInfo = function(x, y) {
 
-        opt.xCoord.html(x + "px");
-        opt.yCoord.html(y + "px");
+        x = Math.round(x*100);
+        y = Math.round((1-y)*100);
+        opt.xCoord.html(x + "%");
+        opt.yCoord.html(y + "%");
     };
 
     init(options);

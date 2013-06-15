@@ -25,6 +25,18 @@ var SoundOutputHandler = function(options) {
     var mediator = false;
 
     /**
+     * Max frequency to play
+     * @type {Number}
+     */
+    var minFrequency = 220;
+
+    /**
+     * Min frequency to play
+     * @type {Number}
+     */
+    var maxFrequency = minFrequency*4;
+
+    /**
      * Constructor
      * @param  {Object} options:
      *         - mediator: mediator to interact with the rest of the app
@@ -57,7 +69,7 @@ var SoundOutputHandler = function(options) {
         gainController = myAudioContext.createGain();
         myOscillator.connect(gainController);
         gainController.connect(myAudioContext.destination);
-        gainController.gain.value = 0;
+        changeGain(0);
         myOscillator.start(0);
     };
 
@@ -79,7 +91,7 @@ var SoundOutputHandler = function(options) {
     var inputStartHandler = function(x, y) {
 
         var frequency = getFrequency(x, y);
-        startPlaying(frequency);
+        startPlaying(frequency, 1 - y);
     };
 
     /**
@@ -90,7 +102,7 @@ var SoundOutputHandler = function(options) {
      */
     var getFrequency = function(x, y) {
 
-        return 440 + x;
+        return ((maxFrequency - minFrequency)*x) + minFrequency;
     };
 
     /**
@@ -112,18 +124,29 @@ var SoundOutputHandler = function(options) {
 
         var frequency = getFrequency(x, y);
         changePlayingFrequency(frequency);
+        changeGain(1 - y);
     };
 
 
     /**
      * Starts playing the synth
      * @param {Number} frequency new frequency in Hz
+     * @param {Number} gain Gain, from 0 to 1
      */
-    var startPlaying = function(frequency) {
+    var startPlaying = function(frequency, gain) {
 
         changePlayingFrequency(frequency);
-        gainController.gain.value = 1;
+        changeGain(gain);
 
+    };
+
+    /**
+     * Changes the gain of the oscillator
+     * @param  {Number} gain New gain, from 0 to 1
+     */
+    var changeGain = function(gain) {
+
+        gainController.gain.value = gain;
     };
 
     /**
@@ -140,7 +163,7 @@ var SoundOutputHandler = function(options) {
      */
     var stopPlaying = function() {
 
-        gainController.gain.value = 0;
+        changeGain(0);
     };
 
     init(options);

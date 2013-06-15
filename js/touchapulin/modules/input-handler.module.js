@@ -13,6 +13,18 @@ var InputHandler = function(options) {
     var opt = false;
 
     /**
+     * Height of the viewport
+     * @type {Number}
+     */
+    var viewportHeight = false;
+
+    /**
+     * Width of the viewport
+     * @type {Number}
+     */
+    var viewportWidth = false;
+
+    /**
      * Constructor
      * @param  {Object} options:
      *         - mediator: interface to communicate with the rest of the app
@@ -23,6 +35,8 @@ var InputHandler = function(options) {
         mediator = options.mediator;
         opt = options;
         initEvents();
+        viewportHeight = opt.touchSurface.height();
+        viewportWidth = opt.touchSurface.width();
     };
 
     /**
@@ -68,20 +82,31 @@ var InputHandler = function(options) {
      */
     var getPosition = function(event) {
 
+        var x, y;
+
         if(Modernizr.touch) {
 
             //TODO: support for more touches
-            return {
-                "x": event.gesture.srcEvent.touches[0].clientX,
-                "y": event.gesture.srcEvent.touches[0].clientY
-            };
+            x = event.gesture.srcEvent.touches[0].clientX;
+            y = event.gesture.srcEvent.touches[0].clientY;
         } else {
 
-            return {
-                "x": event.gesture.srcEvent.clientX,
-                "y": event.gesture.srcEvent.clientY
-            };
+            x = event.gesture.srcEvent.clientX;
+            y = event.gesture.srcEvent.clientY;
         }
+
+        x = x/viewportWidth;
+        y = y/viewportHeight;
+
+        if(x<0) x = 0;
+        if(x>1) x = 1;
+        if(y<0) y = 0;
+        if(y>1) y = 1;
+
+        return {
+            "x": x,
+            "y": y
+        };
     };
 
     /**
