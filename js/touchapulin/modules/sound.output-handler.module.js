@@ -1,16 +1,22 @@
 var SoundOutputHandler = function(options) {
 
     /**
-     * General synth used
+     * Audio context form Web Audio API
      * @type {Object}
      */
-    var synth = false;
+    var myAudioContext = false;
 
     /**
-     * Sine generator, part of the synth
+     * Oscillator that will play the sound
      * @type {Object}
      */
-    var sineGenerator = false;
+    var myOscillator = false;
+
+    /**
+     * Controller for the gain
+     * @type {Object}
+     */
+    var gainController = false;
 
     /**
      * Mediator to interact with the rest of the app
@@ -35,8 +41,24 @@ var SoundOutputHandler = function(options) {
      */
     var initSound = function() {
 
-        synth = new Audiolet();
-        sineGenerator = new Sine(synth);
+        try {
+
+            // Fix up for prefixing
+            window.AudioContext = window.AudioContext||window.webkitAudioContext;
+            myAudioContext = new AudioContext();
+        }
+        catch(e) {
+
+            alert('Web Audio API is not supported in this browser');
+            return false;
+        }
+        myOscillator = myAudioContext.createOscillator();
+        myOscillator.type = myOscillator.SINE;
+        gainController = myAudioContext.createGain();
+        myOscillator.connect(gainController);
+        gainController.connect(myAudioContext.destination);
+        gainController.gain.value = 0;
+        myOscillator.start(0);
     };
 
     /**
@@ -99,8 +121,9 @@ var SoundOutputHandler = function(options) {
      */
     var startPlaying = function(frequency) {
 
-        sineGenerator = new Sine(synth, frequency);
-        sineGenerator.connect(synth.output);
+        changePlayingFrequency(frequency);
+        gainController.gain.value = 1;
+
     };
 
     /**
@@ -109,9 +132,7 @@ var SoundOutputHandler = function(options) {
      */
     var changePlayingFrequency = function(frequency) {
 
-        sineGenerator.disconnect(synth.output);
-        sineGenerator = new Sine(synth, frequency);
-        sineGenerator.connect(synth.output);
+        myOscillator.frequency.value = frequency;
     };
 
     /**
@@ -119,7 +140,7 @@ var SoundOutputHandler = function(options) {
      */
     var stopPlaying = function() {
 
-        sineGenerator.disconnect(synth.output);
+        gainController.gain.value = 0;
     };
 
     init(options);
