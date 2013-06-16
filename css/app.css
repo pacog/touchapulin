@@ -21,14 +21,38 @@ html, body {
     right: 0;
     z-index: 100;
     display: none;
-
-    background: #acd581;
-    color: #FFF;
+    background: rgba(0,0,0,0.3);
     text-align: center;
-    text-shadow: 0 0 10px rgba(0,0,0,0.5);
-    font-size: 3rem;
 }
+.initial-screen.show {
+    /* flexbox, por favor */
+    display: -webkit-box;
+    -webkit-box-orient: horizontal;
+    -webkit-box-pack: center;
+    -webkit-box-align: center;
 
+    display: -moz-box;
+    -moz-box-orient: horizontal;
+    -moz-box-pack: center;
+    -moz-box-align: center;
+
+    display: box;
+    box-orient: horizontal;
+    box-pack: center;
+    box-align: center;
+}
+    .initial-screen-text {
+        padding: 1rem;
+
+        background: #acd581;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(255,255,255,0.4);
+        vertical-align: middle;
+        color: #FFF;
+        text-align: center;
+        text-shadow: 0 0 10px rgba(0,0,0,0.5);
+        font-size: 3rem;
+    }
 /** Touch surface */
 .touch-surface {
     position: absolute;

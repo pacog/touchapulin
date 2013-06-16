@@ -31,7 +31,7 @@ var InitialScreen = function(options) {
             screenElement = opt.screenElement;
             callback = opt.callback;
 
-            screenElement.show();
+            screenElement.addClass("show");
             screenElement.on("touchstart", touchHappened);
         } else {
 
