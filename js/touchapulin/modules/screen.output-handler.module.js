@@ -22,6 +22,12 @@ var ScreenOutputHandler = function(options) {
     var viewportWidth = false;
 
     /**
+     * Last reference to the request animation frame call
+     * @type {Number}
+     */
+    var lastAnimationReference = false;
+
+    /**
      * Constructor
      * @param  {Object} options:
      *         - mediator Mediator to communicate with the rest of the app
@@ -79,8 +85,13 @@ var ScreenOutputHandler = function(options) {
      */
     var inputMoveHandler = function(x, y) {
 
-        movePointerTo(x, y);
-        updateTouchInfo(x, y);
+        if(lastAnimationReference) {
+            window.cancelAnimationFrame(lastAnimationReference);
+        }
+        lastAnimationReference = window.requestAnimationFrame(function() {
+            movePointerTo(x, y);
+            updateTouchInfo(x, y);
+        });
     };
 
     /**
