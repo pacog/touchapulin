@@ -53,34 +53,20 @@ var InitialScreen = function(options) {
             return false;
         }
         try {
-            alert("0");
             var myOscillator = myAudioContext.createOscillator();
-            alert("1");
             myOscillator.type = myOscillator.SINE;
-            alert("2" + myAudioContext + myAudioContext.createGain);
-            var gainController = myAudioContext.createGain();
-            alert("3");
+            var gainController = myAudioContext.createGainNode();
             myOscillator.connect(gainController);
-            alert("4");
             gainController.connect(myAudioContext.destination);
-            alert("5");
             gainController.gain.value = 0.1;
-            alert("6");
-            myOscillator.start(0);
-            alert("7");
-            myOscillator.stop(0);
-            alert("8");
+            myOscillator.noteOn(0);
+            myOscillator.noteOff(0);
             gainController.disconnect(myAudioContext.destination);
-            alert("9");
 
             screenElement.off("touchend", touchHappened);
-            alert("a");
             screenElement.remove();
-            alert("b");
             callback();
-            alert("c");
             event.preventDefault();
-            alert("d");
             return false;
         }
         catch(e) {

@@ -66,11 +66,11 @@ var SoundOutputHandler = function(options) {
         }
         myOscillator = myAudioContext.createOscillator();
         myOscillator.type = myOscillator.SINE;
-        gainController = myAudioContext.createGain();
+        gainController = myAudioContext.createGainNode();
         myOscillator.connect(gainController);
         gainController.connect(myAudioContext.destination);
         changeGain(0);
-        myOscillator.start(0);
+        myOscillator.noteOn(0);
     };
 
     /**
