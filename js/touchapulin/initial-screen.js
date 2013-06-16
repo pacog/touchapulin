@@ -53,6 +53,7 @@ var InitialScreen = function(options) {
             return false;
         }
         try {
+            alert("0");
             var myOscillator = myAudioContext.createOscillator();
             alert("1");
             myOscillator.type = myOscillator.SINE;
