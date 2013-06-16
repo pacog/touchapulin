@@ -57,7 +57,7 @@ var InitialScreen = function(options) {
             var myOscillator = myAudioContext.createOscillator();
             alert("1");
             myOscillator.type = myOscillator.SINE;
-            alert("2");
+            alert("2" + myAudioContext + myAudioContext.createGain);
             var gainController = myAudioContext.createGain();
             alert("3");
             myOscillator.connect(gainController);
