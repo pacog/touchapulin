@@ -32,7 +32,7 @@ var InitialScreen = function(options) {
             callback = opt.callback;
 
             screenElement.addClass("show");
-            screenElement.on("touchstart", touchHappened);
+            screenElement.on("touchend", touchHappened);
         } else {
 
             opt.callback();
@@ -52,21 +52,28 @@ var InitialScreen = function(options) {
             alert('Web Audio API is not supported in this browser');
             return false;
         }
-        var myOscillator = myAudioContext.createOscillator();
-        myOscillator.type = myOscillator.SINE;
-        var gainController = myAudioContext.createGain();
-        myOscillator.connect(gainController);
-        gainController.connect(myAudioContext.destination);
-        gainController.gain.value = 0.1;
-        myOscillator.start(0);
-        myOscillator.stop(0);
-        gainController.disconnect(myAudioContext.destination);
+        try {
+            var myOscillator = myAudioContext.createOscillator();
+            myOscillator.type = myOscillator.SINE;
+            var gainController = myAudioContext.createGain();
+            myOscillator.connect(gainController);
+            gainController.connect(myAudioContext.destination);
+            gainController.gain.value = 0.1;
+            myOscillator.start(0);
+            myOscillator.stop(0);
+            gainController.disconnect(myAudioContext.destination);
 
-        screenElement.off("touchstart", touchHappened);
-        screenElement.remove();
-        callback();
-        event.preventDefault();
-        return false;
+            screenElement.off("touchend", touchHappened);
+            screenElement.remove();
+            callback();
+            event.preventDefault();
+            return false;
+        }
+        catch(e) {
+
+            alert('Something went wrong: ' + e);
+            return false;
+        }
     };
 
     init(options);
