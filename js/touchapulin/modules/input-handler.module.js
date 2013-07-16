@@ -44,9 +44,9 @@ var InputHandler = function(options) {
      */
     var initEvents = function() {
 
-        opt.touchSurface.hammer().on("touch", touchStarted);
-        opt.touchSurface.hammer().on("release", touchEnded);
-        opt.touchSurface.hammer().on("drag", dragging);
+        opt.touchSurface.on("touchstart", touchStarted);
+        opt.touchSurface.on("touchmove", touchMove);
+        opt.touchSurface.on("touchend", touchEnded);
     };
 
     /**
@@ -55,13 +55,11 @@ var InputHandler = function(options) {
      */
     var touchStarted = function(event) {
 
+        //TODO: this should be handled in other module
         opt.touchSurface.addClass("touching");
 
-        var position = getPosition(event);
-        var x = position.x;
-        var y = position.y;
-        mediator.publish("inputStarted", x, y);
-        event.gesture.srcEvent.preventDefault();
+        publishEventForChangedTouches(event, "inputStarted");
+        event.preventDefault();
 
     };
 
@@ -71,8 +69,8 @@ var InputHandler = function(options) {
      */
     var touchEnded = function(event) {
 
-        mediator.publish("inputEnded");
-        event.gesture.srcEvent.preventDefault();
+        publishEventForChangedTouches(event, "inputEnded");
+        event.preventDefault();
     };
 
     /**
@@ -87,10 +85,11 @@ var InputHandler = function(options) {
         if(Modernizr.touch) {
 
             //TODO: support for more touches
-            x = event.gesture.srcEvent.touches[0].clientX;
-            y = event.gesture.srcEvent.touches[0].clientY;
+            x = event.clientX;
+            y = event.clientY;
         } else {
 
+            //TODO: do this for clicks also
             x = event.gesture.srcEvent.clientX;
             y = event.gesture.srcEvent.clientY;
         }
@@ -110,16 +109,32 @@ var InputHandler = function(options) {
     };
 
     /**
+     * Publishes an event for each changed touch in a Event
+     * @param  {Event} event      Event which contains the changed touches
+     * @param  {String} eventName Name of the event we want to publish
+     */
+    var publishEventForChangedTouches = function(event, eventName) {
+
+        for(var i=0; i<event.originalEvent.changedTouches.length; i++) {
+
+            var touch = event.originalEvent.changedTouches[i];
+
+            //Notify new touch
+            var position = getPosition(touch);
+            touch.relativeX = position.x;
+            touch.relativeY = position.y;
+            mediator.publish(eventName, touch);
+        }
+    };
+
+    /**
      * Called when dragging through the page
      * @param  {Event} event
      */
-    var dragging = function(event) {
+    var touchMove = function(event) {
 
-        var position = getPosition(event);
-        var x = position.x;
-        var y = position.y;
-        mediator.publish("inputMoved", x, y);
-        event.gesture.srcEvent.preventDefault();
+        publishEventForChangedTouches(event, "inputMoved");
+        event.preventDefault();
     };
 
     init(options);

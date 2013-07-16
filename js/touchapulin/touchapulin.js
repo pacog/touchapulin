@@ -13,10 +13,11 @@ var Touchapulin = function() {
     var inputHandler = false;
 
     /**
-     * Module that handles all possible outputs
+     * Module that handles the different sound units we have. Each unit will respond to
+     * a interaction, like a touch
      * @type {Object}
      */
-    var outputHandler = false;
+    var touchUnitManager = false;
 
     /**
      * Constructor of the app
@@ -41,13 +42,14 @@ var Touchapulin = function() {
             touchSurface:   $(".js-touch-surface")
         });
 
-        outputHandler = new OutputHandler({
+        touchUnitManager = new TouchUnitManager({
             mediator: mediator,
             touchSurface:   $(".js-touch-surface"),
             pointer:        $(".js-pointer"),
             xCoord:         $(".js-x-coord"),
             yCoord:         $(".js-y-coord")
         });
+
     };
 
     return {

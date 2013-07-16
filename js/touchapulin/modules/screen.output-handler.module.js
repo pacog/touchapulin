@@ -40,20 +40,8 @@ var ScreenOutputHandler = function(options) {
 
         mediator = options.mediator;
         opt = options;
-        initEvents();
         viewportHeight = opt.touchSurface.height();
         viewportWidth = opt.touchSurface.width();
-    };
-
-
-    /**
-     * Initializes all events we listen from the mediator
-     */
-    var initEvents = function() {
-
-        mediator.subscribe("inputStarted", inputStartHandler);
-        mediator.subscribe("inputEnded", inputEndHandler);
-        mediator.subscribe("inputMoved", inputMoveHandler);
     };
 
     /**

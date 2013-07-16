@@ -30,7 +30,8 @@ var OutputHandler = function(options) {
         });
 
         soundOutputHandler = new SoundOutputHandler({
-            mediator:       mediator
+            mediator:       mediator,
+            audioContext:   options.audioContext
         });
     };
 

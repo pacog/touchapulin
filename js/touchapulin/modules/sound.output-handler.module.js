@@ -1,12 +1,6 @@
 var SoundOutputHandler = function(options) {
 
     /**
-     * Audio context form Web Audio API
-     * @type {Object}
-     */
-    var myAudioContext = false;
-
-    /**
      * Oscillator that will play the sound
      * @type {Object}
      */
@@ -37,6 +31,12 @@ var SoundOutputHandler = function(options) {
     var maxFrequency = minFrequency*4;
 
     /**
+     * Common Audio context from Web Audio API
+     * @type {Object}
+     */
+    var myAudioContext = false;
+
+    /**
      * Constructor
      * @param  {Object} options:
      *         - mediator: mediator to interact with the rest of the app
@@ -44,6 +44,7 @@ var SoundOutputHandler = function(options) {
     var init = function(options) {
 
         mediator = options.mediator;
+        myAudioContext = options.audioContext;
         initSound();
         initEvents();
     };
@@ -53,17 +54,6 @@ var SoundOutputHandler = function(options) {
      */
     var initSound = function() {
 
-        try {
-
-            // Fix up for prefixing
-            window.AudioContext = window.AudioContext||window.webkitAudioContext;
-            myAudioContext = new AudioContext();
-        }
-        catch(e) {
-
-            alert('Web Audio API is not supported in this browser');
-            return false;
-        }
         myOscillator = myAudioContext.createOscillator();
         myOscillator.type = myOscillator.SINE;
         gainController = myAudioContext.createGainNode();
@@ -78,9 +68,9 @@ var SoundOutputHandler = function(options) {
      */
     var initEvents = function() {
 
-        mediator.subscribe("inputStarted", inputStartHandler);
+        /*mediator.subscribe("inputStarted", inputStartHandler);
         mediator.subscribe("inputEnded", inputEndHandler);
-        mediator.subscribe("inputMoved", inputMoveHandler);
+        mediator.subscribe("inputMoved", inputMoveHandler);*/
     };
 
     /**
