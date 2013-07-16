@@ -1,5 +1,21 @@
 var ScreenOutputHandler = function(options) {
 
+    /**
+     * Maximum scale we will apply to the pointer (when going up in the screen)
+     * @type {Number}
+     */
+    var MAX_SCALE_POINTER = 1.5;
+
+    /**
+     * Minimun scale we will apply to the pointer (when going down in the screen)
+     * @type {Number}
+     */
+    var MIN_SCALE_POINTER = 0.5;
+
+    /**
+     * Mediator
+     * @type {Object}
+     */
     var mediator = false;
 
     /**
@@ -82,15 +98,17 @@ var ScreenOutputHandler = function(options) {
      */
     var movePointerTo = function(x,y) {
 
-        x = viewportWidth*x;
-        y = viewportHeight*y;
+        var pixelsX = viewportWidth*x;
+        var pixelsY = viewportHeight*y;
 
-        var newTransformValue = "translate(" + x + "px, " + y + "px)";
+        var newScale = ((1-y)*(MAX_SCALE_POINTER - MIN_SCALE_POINTER)) + MIN_SCALE_POINTER;
+
+        var newTransformValue = "translate(" + pixelsX + "px, " + pixelsY + "px) scale(" + newScale + ")";
 
         pointer.css({
             "transform": newTransformValue,
-            "-webkit-transform": "translate(" + x + "px, " + y + "px)",
-            "-moz-transform": "translate(" + x + "px, " + y + "px)"
+            "-webkit-transform": newTransformValue,
+            "-moz-transform": newTransformValue
         });
     };
 
