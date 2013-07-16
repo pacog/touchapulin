@@ -22,6 +22,18 @@ var ScreenOutputHandler = function(options) {
     var viewportWidth = false;
 
     /**
+     * DOM element used to show the position of the touch
+     * @type {DOMElement}
+     */
+    var pointer = false;
+
+    /**
+     * DOM element used to show the position of the touch
+     * @type {DOMElement}
+     */
+    var touchInfo = false;
+
+    /**
      * Last reference to the request animation frame call
      * @type {Number}
      */
@@ -32,9 +44,6 @@ var ScreenOutputHandler = function(options) {
      * @param  {Object} options:
      *         - mediator Mediator to communicate with the rest of the app
      *         - touchSurface surface where the touch is happening
-     *         - pointer element to indicate the position of the touch
-     *         - xCoord element with the X coordinate
-     *         - yCoord element with the y coordinate
      */
     var init = function(options) {
 
@@ -42,43 +51,27 @@ var ScreenOutputHandler = function(options) {
         opt = options;
         viewportHeight = opt.touchSurface.height();
         viewportWidth = opt.touchSurface.width();
+
+        var pointerHTML = ich["pointer"](options);
+        pointer = $(pointerHTML).appendTo(opt.touchSurface);
+
+        var touchInfoHTML = ich["touch-unit-info"](options);
+        touchInfo = $(touchInfoHTML).appendTo(opt.touchSurface.find(".js-touch-info")); //This would be better abstracted
     };
 
     /**
-     * Handler for the start of an input
-     * @param  {Number} x Position x of the input
-     * @param  {Number} y Position y of the input
+     * Called to change the position of the unit.
+     * @param  {Number} x X coordinate of the position
+     * @param  {Number} y Y coordinate of the position
      */
-    var inputStartHandler = function(x, y) {
-
-        opt.touchSurface.addClass("touching");
-        movePointerTo(x, y);
-        updateTouchInfo(x, y);
-    };
-
-    /**
-     * Handler for the end of an input
-     * @param  {Number} x Position x of the input
-     * @param  {Number} y Position y of the input
-     */
-    var inputEndHandler = function() {
-
-        opt.touchSurface.removeClass("touching");
-    };
-
-    /**
-     * Handler for the move of an input
-     * @param  {Number} x Position x of the input
-     * @param  {Number} y Position y of the input
-     */
-    var inputMoveHandler = function(x, y) {
+    var changeUnitPosition = function(x, y) {
 
         if(lastAnimationReference) {
             window.cancelAnimationFrame(lastAnimationReference);
         }
         lastAnimationReference = window.requestAnimationFrame(function() {
             movePointerTo(x, y);
-            updateTouchInfo(x, y);
+            //updateTouchInfo(x, y);
         });
     };
 
@@ -94,7 +87,7 @@ var ScreenOutputHandler = function(options) {
 
         var newTransformValue = "translate(" + x + "px, " + y + "px)";
 
-        opt.pointer.css({
+        pointer.css({
             "transform": newTransformValue,
             "-webkit-transform": "translate(" + x + "px, " + y + "px)",
             "-moz-transform": "translate(" + x + "px, " + y + "px)"
@@ -108,13 +101,48 @@ var ScreenOutputHandler = function(options) {
      */
     var updateTouchInfo = function(x, y) {
 
-        x = Math.round(x*100);
+        //TODO
+        /*x = Math.round(x*100);
         y = Math.round((1-y)*100);
         opt.xCoord.html(x + "%");
-        opt.yCoord.html(y + "%");
+        opt.yCoord.html(y + "%");*/
     };
 
     init(options);
 
-    return {};
+    /**
+     * Called from outside to notify this module of the start of touch
+     * @param  {Object} eventInfo Info related to the event
+     */
+    var notifyStart = function(eventInfo) {
+
+        pointer.addClass("active");
+        touchInfo.addClass("active");
+        movePointerTo(eventInfo.relativeX, eventInfo.relativeY);
+    };
+
+    /**
+     * Called from outside to notify this module of the end of touch
+     * @param  {Object} eventInfo Info related to the event
+     */
+    var notifyStop = function(eventInfo) {
+
+        pointer.removeClass("active");
+        touchInfo.removeClass("active");
+    };
+
+    /**
+     * Called from outside to notify this module of the movement of touch
+     * @param  {Object} eventInfo Info related to the event
+     */
+    var notifyMovement = function(eventInfo) {
+
+        changeUnitPosition(eventInfo.relativeX, eventInfo.relativeY);
+    };
+
+    return {
+        notifyStart:    notifyStart,
+        notifyStop:     notifyStop,
+        notifyMovement: notifyMovement
+    };
 };

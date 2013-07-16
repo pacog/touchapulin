@@ -156,7 +156,26 @@ var SoundOutputHandler = function(options) {
         changeGain(0);
     };
 
+    var notifyStart = function(eventInfo) {
+
+        //TODO
+    };
+
+    var notifyStop = function(eventInfo) {
+
+        //TODO
+    };
+
+    var notifyMovement = function(eventInfo) {
+
+        //TODO
+    };
+
     init(options);
 
-    return {};
+    return {
+        notifyStart:    notifyStart,
+        notifyStop:     notifyStop,
+        notifyMovement: notifyMovement
+    };
 };

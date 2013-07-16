@@ -23,10 +23,7 @@ var OutputHandler = function(options) {
 
         screenOutputHandler = new ScreenOutputHandler({
             mediator:       mediator,
-            touchSurface:   options.touchSurface,
-            pointer:        options.pointer,
-            xCoord:         options.xCoord,
-            yCoord:         options.yCoord
+            touchSurface:   options.touchSurface
         });
 
         soundOutputHandler = new SoundOutputHandler({
@@ -35,5 +32,29 @@ var OutputHandler = function(options) {
         });
     };
 
+    var notifyStart = function(eventInfo) {
+
+        screenOutputHandler.notifyStart(eventInfo);
+        soundOutputHandler.notifyStart(eventInfo);
+    };
+
+    var notifyStop = function(eventInfo) {
+
+        screenOutputHandler.notifyStop(eventInfo);
+        soundOutputHandler.notifyStop(eventInfo);
+    };
+
+    var notifyMovement = function(eventInfo) {
+
+        screenOutputHandler.notifyMovement(eventInfo);
+        soundOutputHandler.notifyMovement(eventInfo);
+    };
+
     init(options);
+
+    return {
+        notifyStart:    notifyStart,
+        notifyStop:     notifyStop,
+        notifyMovement: notifyMovement
+    };
 };

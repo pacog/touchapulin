@@ -42,9 +42,6 @@ var TouchUnitManager = function(options) {
      * @param  {Object} options:
      *         - mediator Mediator to communicate with the rest of the app
      *         - touchSurface surface where the touch is happening
-     *         - pointer element to indicate the position of the touch
-     *         - xCoord element with the X coordinate
-     *         - yCoord element with the y coordinate
      */
     var init = function(options) {
 
@@ -89,8 +86,8 @@ var TouchUnitManager = function(options) {
     var inputStartHandler = function(inputInfo) {
 
         var newTouchUnit = createNewTouchUnit(inputInfo);
-        newTouchUnit.start();
-        debugger;
+        newTouchUnit.start(inputInfo);
+
         //debugger;
 /*        opt.touchSurface.addClass("touching");
         movePointerTo(x, y);
@@ -99,28 +96,22 @@ var TouchUnitManager = function(options) {
 
     /**
      * Handler for the end of an input
-     * @param  {Number} x Position x of the input
-     * @param  {Number} y Position y of the input
+     * @param  {Object} inputInfo Info related with the input
      */
-    var inputEndHandler = function() {
+    var inputEndHandler = function(inputInfo) {
 
-        //opt.touchSurface.removeClass("touching");
+        var touchUnit = getUnitFromInfo(inputInfo);
+        touchUnit.stop(inputInfo);
     };
 
     /**
      * Handler for the move of an input
-     * @param  {Number} x Position x of the input
-     * @param  {Number} y Position y of the input
+     * @param  {Object} inputInfo Info related with the input
      */
-    var inputMoveHandler = function(x, y) {
+    var inputMoveHandler = function(inputInfo) {
 
-        /*if(lastAnimationReference) {
-            window.cancelAnimationFrame(lastAnimationReference);
-        }
-        lastAnimationReference = window.requestAnimationFrame(function() {
-            movePointerTo(x, y);
-            updateTouchInfo(x, y);
-        });*/
+        var touchUnit = getUnitFromInfo(inputInfo);
+        touchUnit.notifyMovement(inputInfo);
     };
 
     /**
@@ -144,15 +135,34 @@ var TouchUnitManager = function(options) {
 
         if(!unusedTouchUnit) {
 
-            throw "ERROR: not enough touch units available";
+            throw "ERROR : TouchUnitManager : createNewTouchUnit : not enough touch units available";
         }
 
-        touchUnits[unusedTouchUnit.getId()] = false;
+        delete touchUnits[unusedTouchUnit.getId()];
         unusedTouchUnit.updateData(inputInfo);
         touchUnits[unusedTouchUnit.getId()] = unusedTouchUnit;
 
         return unusedTouchUnit;
     };
+
+    /**
+     * Gets a unit based on information
+     * @param  {Object} info Information about the unit we want to get
+     * @return {Object}      The touch unit
+     */
+    var getUnitFromInfo = function(info) {
+
+        var unit = touchUnits[info.identifier];
+        if(unit) {
+
+            return unit;
+        } else {
+
+            throw "ERROR : TouchUnitManager : getUnitFromInfo : trying to get a unit info that is not present";
+        }
+    };
+
+    //TODO: create a general screen handler (from application?)
 
     init(options);
 

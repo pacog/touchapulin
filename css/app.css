@@ -92,13 +92,22 @@ html, body {
     transition: opacity 0.1s ease-in-out;
 }
 
-.touching .pointer {
+.pointer.active {
     opacity: 1;
     transition: opacity 0s ease-in-out;
 }
 
 .touch-info {
     text-align: center;
+}
+
+.touch-unit-info {
+    transition: opacity 0.1s ease-in-out;
+    opacity: 0;
+}
+.touch-unit-info.active {
+    opacity: 1;
+    transition: opacity 0s ease-in-out;
 }
 
 .coord {

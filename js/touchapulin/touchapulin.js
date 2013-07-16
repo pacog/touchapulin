@@ -44,10 +44,7 @@ var Touchapulin = function() {
 
         touchUnitManager = new TouchUnitManager({
             mediator: mediator,
-            touchSurface:   $(".js-touch-surface"),
-            pointer:        $(".js-pointer"),
-            xCoord:         $(".js-x-coord"),
-            yCoord:         $(".js-y-coord")
+            touchSurface:   $(".js-touch-surface")
         });
 
     };

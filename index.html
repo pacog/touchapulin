@@ -24,8 +24,6 @@
             <h1 class="main-title">touchapulin</h1>
             <div class="js-pointer pointer"></div>
             <div class="js-touch-info touch-info">
-                <div class="js-x-coord x-coord coord"></div>
-                <div class="js-y-coord y-coord coord"></div>
             </div>
         </div>
 
@@ -35,6 +33,7 @@
         <script src="js/plugins.js"></script>
         <script src="js/touchapulin/mediator.js"></script>
         <script src="js/vendor/request-animation-frame-shim.js"></script>
+        <script src="js/vendor/ICanHaz.js"></script>
         <script src="js/touchapulin/modules/input-handler.module.js"></script>
         <script src="js/touchapulin/modules/output-handler.module.js"></script>
         <script src="js/touchapulin/modules/screen.output-handler.module.js"></script>
@@ -44,5 +43,17 @@
         <script src="js/touchapulin/initial-screen.js"></script>
         <script src="js/touchapulin/touchapulin.js"></script>
         <script src="js/main.js"></script>
+
+        <!-- Templates -->
+        <script id="pointer" type="text/html">
+            <div class="js-pointer pointer"></div>
+        </script>
+        <script id="touch-unit-info" type="text/html">
+            <div class="js-touch-unit-info touch-unit-info">
+                Info
+            </div>
+        </script>
+        <!-- End of templates -->
+
     </body>
 </html>

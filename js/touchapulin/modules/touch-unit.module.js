@@ -32,10 +32,22 @@ TouchUnit.prototype = {
         return this.active;
     },
 
-    start: function() {
+    start: function(eventInfo) {
 
         //TODO
         this.active = true;
+        this.outputHandler.notifyStart(eventInfo);
+    },
+
+    stop: function(eventInfo) {
+
+        this.active = false;
+        this.outputHandler.notifyStop(eventInfo);
+    },
+
+    notifyMovement: function(eventInfo) {
+
+        this.outputHandler.notifyMovement(eventInfo);
     },
 
     destroy: function() {
