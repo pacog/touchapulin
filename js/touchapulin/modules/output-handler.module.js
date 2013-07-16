@@ -32,18 +32,30 @@ var OutputHandler = function(options) {
         });
     };
 
+    /**
+     * Called from outside to notify this module of the start of touch
+     * @param  {Object} eventInfo Info related to the event
+     */
     var notifyStart = function(eventInfo) {
 
         screenOutputHandler.notifyStart(eventInfo);
         soundOutputHandler.notifyStart(eventInfo);
     };
 
+    /**
+     * Called from outside to notify this module of the end of touch
+     * @param  {Object} eventInfo Info related to the event
+     */
     var notifyStop = function(eventInfo) {
 
         screenOutputHandler.notifyStop(eventInfo);
         soundOutputHandler.notifyStop(eventInfo);
     };
 
+    /**
+     * Called from outside to notify this module of the movement of touch
+     * @param  {Object} eventInfo Info related to the event
+     */
     var notifyMovement = function(eventInfo) {
 
         screenOutputHandler.notifyMovement(eventInfo);

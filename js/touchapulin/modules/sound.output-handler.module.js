@@ -46,7 +46,6 @@ var SoundOutputHandler = function(options) {
         mediator = options.mediator;
         myAudioContext = options.audioContext;
         initSound();
-        initEvents();
     };
 
     /**
@@ -64,27 +63,6 @@ var SoundOutputHandler = function(options) {
     };
 
     /**
-     * Initializes all events we listen from the mediator
-     */
-    var initEvents = function() {
-
-        /*mediator.subscribe("inputStarted", inputStartHandler);
-        mediator.subscribe("inputEnded", inputEndHandler);
-        mediator.subscribe("inputMoved", inputMoveHandler);*/
-    };
-
-    /**
-     * Handler for the start of an input
-     * @param  {Number} x Position x of the input
-     * @param  {Number} y Position y of the input
-     */
-    var inputStartHandler = function(x, y) {
-
-        var frequency = getFrequency(x, y);
-        startPlaying(frequency, 1 - y);
-    };
-
-    /**
      * Gets the frequency at which we should play, depneding on the coordinates
      * @param  {Number} x X coordinate
      * @param  {Number} y Y coordinate]
@@ -94,29 +72,6 @@ var SoundOutputHandler = function(options) {
 
         return ((maxFrequency - minFrequency)*x) + minFrequency;
     };
-
-    /**
-     * Handler for the end of an input
-     * @param  {Number} x Position x of the input
-     * @param  {Number} y Position y of the input
-     */
-    var inputEndHandler = function() {
-
-        stopPlaying();
-    };
-
-    /**
-     * Handler for the move of an input
-     * @param  {Number} x Position x of the input
-     * @param  {Number} y Position y of the input
-     */
-    var inputMoveHandler = function(x, y) {
-
-        var frequency = getFrequency(x, y);
-        changePlayingFrequency(frequency);
-        changeGain(1 - y);
-    };
-
 
     /**
      * Starts playing the synth
@@ -156,19 +111,35 @@ var SoundOutputHandler = function(options) {
         changeGain(0);
     };
 
+    /**
+     * Called from outside to notify this module of the start of touch
+     * @param  {Object} eventInfo Info related to the event
+     */
     var notifyStart = function(eventInfo) {
 
-        //TODO
+
+        var frequency = getFrequency(eventInfo.relativeX, eventInfo.relativeY);
+        startPlaying(frequency, 1 - eventInfo.relativeY);
     };
 
+    /**
+     * Called from outside to notify this module of the end of touch
+     * @param  {Object} eventInfo Info related to the event
+     */
     var notifyStop = function(eventInfo) {
 
-        //TODO
+        stopPlaying();
     };
 
+    /**
+     * Called from outside to notify this module of the movement of touch
+     * @param  {Object} eventInfo Info related to the event
+     */
     var notifyMovement = function(eventInfo) {
 
-        //TODO
+        var frequency = getFrequency(eventInfo.relativeX, eventInfo.relativeY);
+        changePlayingFrequency(frequency);
+        changeGain(1 - eventInfo.relativeY);
     };
 
     init(options);

@@ -74,7 +74,7 @@ TouchUnit.prototype = {
 
         this.active = true;
         this.outputHandler.notifyStart(eventInfo);
-        this.latestInput = newData;
+        this.latestInput = eventInfo;
     },
 
     /**
@@ -85,7 +85,7 @@ TouchUnit.prototype = {
 
         this.active = false;
         this.outputHandler.notifyStop(eventInfo);
-        this.latestInput = newData;
+        this.latestInput = eventInfo;
     },
 
     /**
@@ -95,7 +95,7 @@ TouchUnit.prototype = {
     notifyMovement: function(eventInfo) {
 
         this.outputHandler.notifyMovement(eventInfo);
-        this.latestInput = newData;
+        this.latestInput = eventInfo;
     },
 
     /**
