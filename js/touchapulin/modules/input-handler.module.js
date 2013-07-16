@@ -25,6 +25,12 @@ var InputHandler = function(options) {
     var viewportWidth = false;
 
     /**
+     * Flag used to know (for mouse only) if we are clicking or not
+     * @type {Boolean}
+     */
+    var weAreClicking = false;
+
+    /**
      * Constructor
      * @param  {Object} options:
      *         - mediator: interface to communicate with the rest of the app
@@ -44,9 +50,18 @@ var InputHandler = function(options) {
      */
     var initEvents = function() {
 
-        opt.touchSurface.on("touchstart", touchStarted);
-        opt.touchSurface.on("touchmove", touchMove);
-        opt.touchSurface.on("touchend", touchEnded);
+        if(Modernizr.touch) {
+
+            opt.touchSurface.on("touchstart", touchStarted);
+            opt.touchSurface.on("touchmove", touchMove);
+            opt.touchSurface.on("touchend", touchEnded);
+        } else {
+
+            opt.touchSurface.on("mousedown", touchStarted);
+            opt.touchSurface.on("mousemove", touchMove);
+            opt.touchSurface.on("mouseup", touchEnded);
+        }
+
     };
 
     /**
@@ -57,6 +72,16 @@ var InputHandler = function(options) {
 
         //TODO: this should be handled in other module
         opt.touchSurface.addClass("touching");
+
+        if( (event.type === "mousedown") && event.which === 1) {
+
+            weAreClicking = true;
+        }
+
+        if( (event.type === "mousedown") && event.which !== 1) {
+
+            return;
+        }
 
         publishEventForChangedTouches(event, "inputStarted");
         event.preventDefault();
@@ -69,6 +94,16 @@ var InputHandler = function(options) {
      */
     var touchEnded = function(event) {
 
+        if( (event.type === "mouseup") && event.which === 1) {
+
+            weAreClicking = false;
+        }
+
+        if( (event.type === "mouseup") && event.which !== 1) {
+
+            return;
+        }
+
         publishEventForChangedTouches(event, "inputEnded");
         event.preventDefault();
     };
@@ -80,19 +115,8 @@ var InputHandler = function(options) {
      */
     var getPosition = function(event) {
 
-        var x, y;
-
-        if(Modernizr.touch) {
-
-            //TODO: support for more touches
-            x = event.clientX;
-            y = event.clientY;
-        } else {
-
-            //TODO: do this for clicks also
-            x = event.gesture.srcEvent.clientX;
-            y = event.gesture.srcEvent.clientY;
-        }
+        var x = event.clientX;
+        var y = event.clientY;
 
         x = x/viewportWidth;
         y = y/viewportHeight;
@@ -115,14 +139,25 @@ var InputHandler = function(options) {
      */
     var publishEventForChangedTouches = function(event, eventName) {
 
-        for(var i=0; i<event.originalEvent.changedTouches.length; i++) {
+        var arrayToPublish = false;
 
-            var touch = event.originalEvent.changedTouches[i];
+        if( $.isArray(event.originalEvent.changedTouches) ) {
+
+            arrayToPublish = event.originalEvent.changedTouches;
+        } else {
+
+            arrayToPublish = [event.originalEvent];
+        }
+
+        for(var i=0; i<arrayToPublish.length; i++) {
+
+            var touch = arrayToPublish[i];
 
             //Notify new touch
             var position = getPosition(touch);
             touch.relativeX = position.x;
             touch.relativeY = position.y;
+            touch.identifier = touch.identifier || "onlyClicks";
             mediator.publish(eventName, touch);
         }
     };
@@ -133,8 +168,14 @@ var InputHandler = function(options) {
      */
     var touchMove = function(event) {
 
-        publishEventForChangedTouches(event, "inputMoved");
-        event.preventDefault();
+        if( (event.type === "mousemove") && !weAreClicking ) {
+
+            //Do nothing, it's mousemove without click
+        } else {
+
+            publishEventForChangedTouches(event, "inputMoved");
+            event.preventDefault();
+        }
     };
 
     init(options);

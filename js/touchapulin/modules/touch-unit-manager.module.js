@@ -87,11 +87,6 @@ var TouchUnitManager = function(options) {
 
         var newTouchUnit = createNewTouchUnit(inputInfo);
         newTouchUnit.start(inputInfo);
-
-        //debugger;
-/*        opt.touchSurface.addClass("touching");
-        movePointerTo(x, y);
-        updateTouchInfo(x, y);*/
     };
 
     /**
