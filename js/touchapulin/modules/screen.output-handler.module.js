@@ -56,7 +56,7 @@ var ScreenOutputHandler = function(options) {
         pointer = $(pointerHTML).appendTo(opt.touchSurface);
 
         var touchInfoHTML = ich["touch-unit-info"](options);
-        touchInfo = $(touchInfoHTML).appendTo(opt.touchSurface.find(".js-touch-info")); //This would be better abstracted
+        touchInfo = $(touchInfoHTML).appendTo(opt.touchSurface);
     };
 
     /**
@@ -71,7 +71,7 @@ var ScreenOutputHandler = function(options) {
         }
         lastAnimationReference = window.requestAnimationFrame(function() {
             movePointerTo(x, y);
-            //updateTouchInfo(x, y);
+            updateTouchInfo(x, y);
         });
     };
 
@@ -101,11 +101,20 @@ var ScreenOutputHandler = function(options) {
      */
     var updateTouchInfo = function(x, y) {
 
-        //TODO
-        /*x = Math.round(x*100);
-        y = Math.round((1-y)*100);
-        opt.xCoord.html(x + "%");
-        opt.yCoord.html(y + "%");*/
+        var prettyX = Math.round(x*100);
+        var prettyY = 100 - Math.round(y*100);
+        touchInfo.html("" + prettyX + "," + prettyY);
+
+        x = viewportWidth*x;
+        y = viewportHeight*y;
+
+        var newTransformValue = "translate(" + x + "px, " + y + "px)";
+
+        touchInfo.css({
+            "transform": newTransformValue,
+            "-webkit-transform": "translate(" + x + "px, " + y + "px)",
+            "-moz-transform": "translate(" + x + "px, " + y + "px)"
+        });
     };
 
     init(options);
@@ -119,6 +128,7 @@ var ScreenOutputHandler = function(options) {
         pointer.addClass("active");
         touchInfo.addClass("active");
         movePointerTo(eventInfo.relativeX, eventInfo.relativeY);
+        updateTouchInfo(eventInfo.relativeX, eventInfo.relativeY);
     };
 
     /**

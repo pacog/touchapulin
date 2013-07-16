@@ -102,6 +102,12 @@ html, body {
 }
 
 .touch-unit-info {
+    position: absolute;
+    top: 15px;
+    left: -15px;
+    width: 30px;
+    height: 30px;
+    opacity: 0;
     transition: opacity 0.1s ease-in-out;
     opacity: 0;
 }
