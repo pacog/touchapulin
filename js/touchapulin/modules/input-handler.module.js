@@ -141,7 +141,7 @@ var InputHandler = function(options) {
 
         var arrayToPublish = false;
 
-        if( $.isArray(event.originalEvent.changedTouches) ) {
+        if( typeof event.originalEvent.changedTouches === "object" ) {
 
             arrayToPublish = event.originalEvent.changedTouches;
         } else {
