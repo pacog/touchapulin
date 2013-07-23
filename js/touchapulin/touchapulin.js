@@ -20,6 +20,18 @@ var Touchapulin = function() {
     var touchUnitManager = false;
 
     /**
+     * Scale module to use
+     * @type {Object}
+     */
+    var scale = false;
+
+    /**
+     * General screen output module, will draw notes and other info
+     * @type {Object}
+     */
+    var generalScreenOutputModule = false;
+
+    /**
      * Constructor of the app
      */
     var init = function() {
@@ -37,14 +49,23 @@ var Touchapulin = function() {
 
         mediator = new Mediator();
 
+        scale = new Scale();
+
+        generalScreenOutputModule = new GeneralScreenOutputModule({
+            outputElement:  $(".js-touch-surface"),
+            scale:          scale
+        });
+
         inputHandler = new InputHandler({
-            mediator: mediator,
+            mediator:       mediator,
             touchSurface:   $(".js-touch-surface")
         });
 
         touchUnitManager = new TouchUnitManager({
-            mediator: mediator,
-            touchSurface:   $(".js-touch-surface")
+            mediator:                   mediator,
+            touchSurface:               $(".js-touch-surface"),
+            scale:                      scale,
+            generalScreenOutputModule:  generalScreenOutputModule
         });
     };
 

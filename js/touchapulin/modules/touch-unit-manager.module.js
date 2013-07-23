@@ -38,6 +38,18 @@ var TouchUnitManager = function(options) {
     var myAudioContext = false;
 
     /**
+     * Scale module to use
+     * @type {Object}
+     */
+    var scale = false;
+
+    /**
+     * General screen output module, will draw notes and other info
+     * @type {Object}
+     */
+    var generalScreenOutputModule = false;
+
+    /**
      * Constructor
      * @param  {Object} options:
      *         - mediator Mediator to communicate with the rest of the app
@@ -57,6 +69,8 @@ var TouchUnitManager = function(options) {
             return false;
         }
         mediator = options.mediator;
+        scale = options.scale;
+        generalScreenOutputModule = options.generalScreenOutputModule;
         opt = options;
         options.audioContext = myAudioContext;
         initEvents();

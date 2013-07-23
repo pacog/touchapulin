@@ -125,3 +125,22 @@ html, body {
     text-shadow: 0 0 10px #8a2e3a;
     opacity: 0.2;
 }
+
+/** Note helpers */
+.note {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: red;
+    overflow: visible;
+}
+    .note-name {
+        display: block;
+        position: absolute;
+        width: 30px;
+        left: -15px;
+        height: 20px;
+        top: 5px;
+        background: white;
+    }

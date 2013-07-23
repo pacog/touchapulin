@@ -33,6 +33,7 @@
         <script src="js/vendor/ICanHaz.js"></script>
         <script src="js/touchapulin/modules/input-handler.module.js"></script>
         <script src="js/touchapulin/modules/output-handler.module.js"></script>
+        <script src="js/touchapulin/modules/general-screen-output.module.js"></script>
         <script src="js/touchapulin/modules/screen.output-handler.module.js"></script>
         <script src="js/touchapulin/modules/sound.output-handler.module.js"></script>
         <script src="js/touchapulin/modules/touch-unit.module.js"></script>
@@ -50,6 +51,13 @@
             <div class="js-touch-unit-info touch-unit-info">
                 Info
             </div>
+        </script>
+        <script id="notes" type="text/html">
+            {{#notes}}
+                <div class="note" style="left: {{percentage}}%;">
+                    <span class="note-name">{{note}}</span>
+                </div>
+            {{/notes}}
         </script>
         <!-- End of templates -->
 
