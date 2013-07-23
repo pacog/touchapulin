@@ -64,13 +64,12 @@ var SoundOutputHandler = function(options) {
 
     /**
      * Gets the frequency at which we should play, depneding on the coordinates
-     * @param  {Number} x X coordinate
-     * @param  {Number} y Y coordinate]
-     * @return {[type]}   The frequenty (Hz)
+     * @param  {Object} eventInfo Info about the event
+     * @return {Number}   The frequenty (Hz)
      */
-    var getFrequency = function(x, y) {
+    var getFrequency = function(eventInfo) {
 
-        return ((maxFrequency - minFrequency)*x) + minFrequency;
+        return eventInfo.frequency;
     };
 
     /**
@@ -118,7 +117,7 @@ var SoundOutputHandler = function(options) {
     var notifyStart = function(eventInfo) {
 
 
-        var frequency = getFrequency(eventInfo.relativeX, eventInfo.relativeY);
+        var frequency = getFrequency(eventInfo);
         startPlaying(frequency, 1 - eventInfo.relativeY);
     };
 
@@ -137,7 +136,7 @@ var SoundOutputHandler = function(options) {
      */
     var notifyMovement = function(eventInfo) {
 
-        var frequency = getFrequency(eventInfo.relativeX, eventInfo.relativeY);
+        var frequency = getFrequency(eventInfo);
         changePlayingFrequency(frequency);
         changeGain(1 - eventInfo.relativeY);
     };

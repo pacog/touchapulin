@@ -28,6 +28,12 @@ TouchUnit.prototype = {
     latestInput: false,
 
     /**
+     * Scale module to use
+     * @type {Object}
+     */
+    scale: false,
+
+    /**
      * Constructor
      * @param  {Object} options TODO:
      * @param  {String} idSeed  Seed to generate the first id.
@@ -36,6 +42,7 @@ TouchUnit.prototype = {
 
         this.id = "TouchUnit" + idSeed;
         this.outputHandler = new OutputHandler(options);
+        this.scale = options.scale;
     },
 
     /**
@@ -73,6 +80,7 @@ TouchUnit.prototype = {
     start: function(eventInfo) {
 
         this.active = true;
+        this._addFrequencyToEventInfo(eventInfo);
         this.outputHandler.notifyStart(eventInfo);
         this.latestInput = eventInfo;
     },
@@ -84,6 +92,7 @@ TouchUnit.prototype = {
     stop: function(eventInfo) {
 
         this.active = false;
+        this._addFrequencyToEventInfo(eventInfo);
         this.outputHandler.notifyStop(eventInfo);
         this.latestInput = eventInfo;
     },
@@ -94,8 +103,18 @@ TouchUnit.prototype = {
      */
     notifyMovement: function(eventInfo) {
 
+        this._addFrequencyToEventInfo(eventInfo);
         this.outputHandler.notifyMovement(eventInfo);
         this.latestInput = eventInfo;
+    },
+
+    /**
+     * Adds frequency information to the eventInfo
+     * @param  {Object} eventInfo Event info where we will add the frequency information
+     */
+    _addFrequencyToEventInfo: function(eventInfo) {
+
+        eventInfo.frequency = this.scale.getFrequencyFromPercentage(eventInfo.relativeX);
     },
 
     /**

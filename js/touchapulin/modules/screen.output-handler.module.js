@@ -80,14 +80,14 @@ var ScreenOutputHandler = function(options) {
      * @param  {Number} x X coordinate of the position
      * @param  {Number} y Y coordinate of the position
      */
-    var changeUnitPosition = function(x, y) {
+    var changeUnitPosition = function(x, y, eventInfo) {
 
         if(lastAnimationReference) {
             window.cancelAnimationFrame(lastAnimationReference);
         }
         lastAnimationReference = window.requestAnimationFrame(function() {
             movePointerTo(x, y);
-            updateTouchInfo(x, y);
+            updateTouchInfo(x, y, eventInfo);
         });
     };
 
@@ -116,12 +116,12 @@ var ScreenOutputHandler = function(options) {
      * Updates the coordinates info
      * @param  {Number} x X coordinate of the position
      * @param  {Number} y Y coordinate of the position
+     * @param  {Object} eventInfo infor about the event
      */
-    var updateTouchInfo = function(x, y) {
+    var updateTouchInfo = function(x, y, eventInfo) {
 
-        var prettyX = Math.round(x*100);
-        var prettyY = 100 - Math.round(y*100);
-        touchInfo.html("" + prettyX + "," + prettyY);
+        var prettyFreq = Math.round(eventInfo.frequency);
+        touchInfo.html("" + prettyFreq + "Hz");
 
         x = viewportWidth*x;
         y = viewportHeight*y;
@@ -146,7 +146,7 @@ var ScreenOutputHandler = function(options) {
         pointer.addClass("active");
         touchInfo.addClass("active");
         movePointerTo(eventInfo.relativeX, eventInfo.relativeY);
-        updateTouchInfo(eventInfo.relativeX, eventInfo.relativeY);
+        updateTouchInfo(eventInfo.relativeX, eventInfo.relativeY, eventInfo);
     };
 
     /**
@@ -165,7 +165,7 @@ var ScreenOutputHandler = function(options) {
      */
     var notifyMovement = function(eventInfo) {
 
-        changeUnitPosition(eventInfo.relativeX, eventInfo.relativeY);
+        changeUnitPosition(eventInfo.relativeX, eventInfo.relativeY, eventInfo);
     };
 
     return {
