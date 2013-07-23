@@ -46,9 +46,6 @@ var Touchapulin = function() {
             mediator: mediator,
             touchSurface:   $(".js-touch-surface")
         });
-
-        var scale = new Scale();
-        var notes = scale.getNotes();
     };
 
     return {

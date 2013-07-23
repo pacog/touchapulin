@@ -119,7 +119,7 @@ Scale.prototype = {
 
         //Calculate the position of the first note within the octave
         var firstNote = this.firstNote.slice(0, this.firstNote.length - 1);
-        var startPosition = this._getPositionInOctave(firstNote);//this._getSemitonesDifference(firstNote, "4", this.key, "4") + 12; //+12 so it's never negative
+        var startPosition = this._getPositionInOctave(firstNote);
         var notes = [];
         var actualPosition = false;
         var scaleSemitones = this.MODE_INTERVALS[this.mode];
@@ -129,9 +129,11 @@ Scale.prototype = {
             actualPosition = (i + startPosition) % 12;
             if( scaleSemitones[actualPosition] ) {
 
+                var noteToAdd = this._getNoteFromInterval(i);
                 notes.push({
 
-                    "note": this._getNoteFromInterval(i)
+                    "note": noteToAdd,
+                    "percentage": this._getPercentageFromNote(noteToAdd)
                 });
             }
         }
@@ -139,6 +141,21 @@ Scale.prototype = {
         return notes;
     },
 
+    /**
+     * Gets the percentage on which a note should be painted in the screen
+     * @param  {String} note The note
+     * @return {Number}      Percentage, from 0 to 1
+     */
+    _getPercentageFromNote: function(note) {
+
+        var octave1 = this.firstNote.slice(-1);
+        var note1 = this.firstNote.slice(0, this.firstNote.length - 1);
+        var octave2 = note.slice(-1);
+        var note2 = note.slice(0, this.lastNote.length - 1);
+        var semitones = this._getSemitonesDifference(note1, octave1, note2, octave2);
+
+        return semitones/this.totalSemitones;
+    },
 
     /**
      * Gets the note corresponding to add a certain number of semitones to the first note of the scale
