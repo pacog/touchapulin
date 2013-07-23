@@ -47,6 +47,8 @@ var Touchapulin = function() {
             touchSurface:   $(".js-touch-surface")
         });
 
+        var scale = new Scale();
+        var notes = scale.getNotes();
     };
 
     return {
