@@ -38,10 +38,28 @@ var ScreenOutputHandler = function(options) {
     var viewportWidth = false;
 
     /**
+     * DOM element used to contain the pointer
+     * @type {DOMElement}
+     */
+    var pointerContainer = false;
+
+    /**
      * DOM element used to show the position of the touch
      * @type {DOMElement}
      */
     var pointer = false;
+
+    /**
+     * DOM element used to show the vertical position of the touch
+     * @type {DOMElement}
+     */
+    var pointerVerticalHelper = false;
+
+    /**
+     * DOM element used to show the horizontal position of the touch
+     * @type {DOMElement}
+     */
+    var pointerHorizontalHelper = false;
 
     /**
      * DOM element used to show the position of the touch
@@ -69,7 +87,12 @@ var ScreenOutputHandler = function(options) {
         viewportWidth = opt.touchSurface.width();
 
         var pointerHTML = ich["pointer"](options);
-        pointer = $(pointerHTML).appendTo(opt.touchSurface);
+        pointerContainer = $(pointerHTML).appendTo(opt.touchSurface);
+
+        pointer = pointerContainer.find(".js-pointer");
+        pointer.addClass("asdvasdvasdvsad222");
+        pointerHorizontalHelper = pointerContainer.find(".js-pointer-horizontal-helper");
+        pointerVerticalHelper = pointerContainer.find(".js-pointer-vertical-helper");
 
         var touchInfoHTML = ich["touch-unit-info"](options);
         touchInfo = $(touchInfoHTML).appendTo(opt.touchSurface);
@@ -102,13 +125,26 @@ var ScreenOutputHandler = function(options) {
         var pixelsY = viewportHeight*y;
 
         var newScale = ((1-y)*(MAX_SCALE_POINTER - MIN_SCALE_POINTER)) + MIN_SCALE_POINTER;
-
         var newTransformValue = "translate(" + pixelsX + "px, " + pixelsY + "px) scale(" + newScale + ")";
 
         pointer.css({
             "transform": newTransformValue,
             "-webkit-transform": newTransformValue,
             "-moz-transform": newTransformValue
+        });
+
+        var newXTransformValue = "translateX(" + pixelsX + "px)";
+        pointerHorizontalHelper.css({
+            "transform": newXTransformValue,
+            "-webkit-transform": newXTransformValue,
+            "-moz-transform": newXTransformValue
+        });
+
+        var newYTransformValue = "translateY(" + pixelsY + "px)";
+        pointerVerticalHelper.css({
+            "transform": newYTransformValue,
+            "-webkit-transform": newYTransformValue,
+            "-moz-transform": newYTransformValue
         });
     };
 
@@ -143,7 +179,7 @@ var ScreenOutputHandler = function(options) {
      */
     var notifyStart = function(eventInfo) {
 
-        pointer.addClass("active");
+        pointerContainer.addClass("active");
         touchInfo.addClass("active");
         movePointerTo(eventInfo.relativeX, eventInfo.relativeY);
         updateTouchInfo(eventInfo.relativeX, eventInfo.relativeY, eventInfo);
@@ -155,7 +191,7 @@ var ScreenOutputHandler = function(options) {
      */
     var notifyStop = function(eventInfo) {
 
-        pointer.removeClass("active");
+        pointerContainer.removeClass("active");
         touchInfo.removeClass("active");
     };
 

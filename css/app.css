@@ -80,22 +80,40 @@ html, body {
     opacity: 0.05;
 }
 
-.pointer {
-    position: absolute;
-    top: -15px;
-    left: -15px;
-    width: 30px;
-    height: 30px;
-    border-radius: 15px;
-    background: #8a2e3a;
+.pointer-container {
     opacity: 0;
-    transition: opacity 0.1s ease-in-out;
 }
-
-.pointer.active {
+.active.pointer-container {
     opacity: 1;
     transition: opacity 0s ease-in-out;
 }
+    .pointer {
+        position: absolute;
+        top: -15px;
+        left: -15px;
+        width: 30px;
+        height: 30px;
+        border-radius: 15px;
+        background: #8a2e3a;
+        transition: opacity 0.1s ease-in-out;
+    }
+    .pointer-vertical-helper {
+        position: absolute;
+        height: 1px;
+        background: blue;
+        top: 0;
+        left: 0;
+        right: 0;
+    }
+    .pointer-horizontal-helper {
+        position: absolute;
+        width: 1px;
+        background: pink;
+        top: 0;
+        left: 0;
+        bottom: 0;
+    }
+
 
 .touch-info {
     text-align: center;
