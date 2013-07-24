@@ -38,7 +38,7 @@ Scale.prototype = {
      * Last note of the scale
      * @type {String}
      */
-    lastNote: "A6",
+    lastNote: "A5",
 
     /**
      * Key of the scale
@@ -50,7 +50,7 @@ Scale.prototype = {
      * Mode of the scale
      * @type {String}
      */
-    mode: "major",
+    mode: "chromatic",
 
     /**
      * Frequency for the first note
@@ -151,7 +151,7 @@ Scale.prototype = {
         var octave1 = this.firstNote.slice(-1);
         var note1 = this.firstNote.slice(0, this.firstNote.length - 1);
         var octave2 = note.slice(-1);
-        var note2 = note.slice(0, this.lastNote.length - 1);
+        var note2 = note.slice(0, note.length - 1);
         var semitones = this._getSemitonesDifference(note1, octave1, note2, octave2);
 
         return semitones/this.totalSemitones;
