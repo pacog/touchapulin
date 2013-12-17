@@ -26,6 +26,12 @@ var Touchapulin = function() {
     var scale = false;
 
     /**
+     * Options of the app
+     * @type {Object}
+     */
+    var options = false;
+
+    /**
      * General screen output module, will draw notes and other info
      * @type {Object}
      */
@@ -49,7 +55,9 @@ var Touchapulin = function() {
 
         mediator = new Mediator();
 
-        scale = new Scale();
+        scale = new Scale(options);
+
+        options = new TouchapulinOptions();
 
         generalScreenOutputModule = new GeneralScreenOutputModule({
             outputElement:  $(".js-touch-surface"),
@@ -65,7 +73,8 @@ var Touchapulin = function() {
             mediator:                   mediator,
             touchSurface:               $(".js-touch-surface"),
             scale:                      scale,
-            generalScreenOutputModule:  generalScreenOutputModule
+            generalScreenOutputModule:  generalScreenOutputModule,
+            options:                    options
         });
     };
 

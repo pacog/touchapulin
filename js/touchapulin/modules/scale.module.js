@@ -83,6 +83,7 @@ Scale.prototype = {
      *                          - key Key of the scale
      *                          - mode "chromatic", "minor", "major"
      *                          - lastNote Note on which the scale ends
+     *                          - stickToNotes value from 0 to 1 to indicate if we want to correct user input
      *
      * @private
      */
@@ -205,6 +206,8 @@ Scale.prototype = {
 
         var relativeSemitone = percentage * this.totalSemitones;
 
+        var closestSemitoneInScale = this.getClosestSemitoneInScale();
+
         return this.A4_FREQUENCY * Math.pow(this.TR2, relativeSemitone);
     },
 
@@ -224,6 +227,16 @@ Scale.prototype = {
         //Apply the formula from http://www.phy.mtu.edu/~suits/NoteFreqCalcs.html
         return this.A4_FREQUENCY * Math.pow(this.TR2, semitones);
     },
+
+    /**
+     * Returns the closest semitone in the scale
+     * @param  {Number} actualSemitone The input semitone
+     * @return {Number}                The closest semitone
+     */
+    getClosestSemitoneInScale: function(actualSemitone) {
+
+
+    }
 
     /**
      * Returns the semitone difference between two notes
